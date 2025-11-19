@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Usuario
 model User {
   id         Int      @id @default(autoincrement())
   name       String   @db.VarChar(255)
@@ -23,4 +24,28 @@ model User {
 enum Role {
   admin
   user
+}
+
+// Pista
+model Court {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(255)
+  type        CourtType @default(INDOOR)
+  surface     Surface   @default(CRISTAL)
+  price       Float
+  isAvailable Boolean   @default(true)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  @@map("courts")
+}
+
+enum CourtType {
+  INDOOR
+  OUTDOOR
+}
+
+enum Surface {
+  MURO
+  CRISTAL
 }
