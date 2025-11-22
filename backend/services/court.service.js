@@ -38,9 +38,13 @@ const updateCourt = async (id, courtData) => {
     name: courtData.name,
     type: courtData.type,
     surface: courtData.surface,
-    price: parseFloat(courtData.price),
     isAvailable: courtData.isAvailable,
   };
+
+  // Solo procesamos el precio si nos lo envían
+  if (courtData.price !== undefined) {
+    dataToUpdate.price = parseFloat(courtData.price);
+  }
 
   const updatedCourt = await prisma.court.update({
     where: { id: Number(id) },
