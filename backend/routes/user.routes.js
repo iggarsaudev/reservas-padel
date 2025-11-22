@@ -1,7 +1,7 @@
 const express = require("express");
-const router = express.Router(); // Usamos el Router de Express
+const router = express.Router();
+const validateId = require("../middlewares/validateId.js");
 
-// Importamos las funciones del controlador que acabamos de crear
 const {
   getAllUsers,
   createUser,
@@ -10,10 +10,7 @@ const {
   deleteUser,
 } = require("../controllers/user.controller.js");
 
-// Importamos el middleware
-const validateId = require("../middlewares/validateId.js");
-
-// --- DOCUMENTACIÓN DE ESQUEMAS (MODELOS) ---
+// Modelo
 /**
  * @swagger
  *  components:
@@ -55,7 +52,7 @@ const validateId = require("../middlewares/validateId.js");
  *          role: admin
  */
 
-// Rutas base
+// Ruta base
 /**
  * @swagger
  *  /api/users:
