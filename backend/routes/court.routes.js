@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const validateId = require("../middlewares/validateId.js");
+const authenticateToken = require("../middlewares/authMiddleware");
 
 const {
   getAllCourts,
@@ -79,6 +80,8 @@ router.get("/", getAllCourts);
  *    post:
  *      summary: Crea una nueva pista
  *      tags: [Courts]
+ *      security:
+ *        - bearerAuth: []
  *      requestBody:
  *        required: true
  *        content:
@@ -91,7 +94,7 @@ router.get("/", getAllCourts);
  *        500:
  *          description: Error del servidor
  */
-router.post("/", createCourt);
+router.post("/", authenticateToken, createCourt);
 
 /**
  * @swagger
@@ -122,6 +125,8 @@ router.get("/:id", validateId, getCourtById);
  *    put:
  *      summary: Actualiza una pista
  *      tags: [Courts]
+ *      security:
+ *        - bearerAuth: []
  *      parameters:
  *        - in: path
  *          name: id
@@ -141,7 +146,7 @@ router.get("/:id", validateId, getCourtById);
  *        404:
  *          description: Pista no encontrada
  */
-router.put("/:id", validateId, updateCourt);
+router.put("/:id", validateId, authenticateToken, updateCourt);
 
 /**
  * @swagger
@@ -149,6 +154,8 @@ router.put("/:id", validateId, updateCourt);
  *    delete:
  *      summary: Elimina una pista
  *      tags: [Courts]
+ *      security:
+ *        - bearerAuth: []
  *      parameters:
  *        - in: path
  *          name: id
@@ -162,7 +169,7 @@ router.put("/:id", validateId, updateCourt);
  *        404:
  *          description: Pista no encontrada
  */
-router.delete("/:id", validateId, deleteCourt);
+router.delete("/:id", validateId, authenticateToken, deleteCourt);
 
 // Exportamos el router para que index.js lo pueda usar
 module.exports = router;

@@ -30,7 +30,11 @@ Backend para una aplicación de gestión y reserva de pistas de pádel. Construi
 
 3. **Configurar Variables de Entorno: Crea un archivo .env en la carpeta backend con lo siguiente:**
    ```bash
+   # Conexión a la Base de Datos (Docker Local)
    DATABASE_URL="mysql://root:padel-secret-pass@127.0.0.1:3306/padel_db"
+   
+   # Secreto para firmar los Tokens JWT (¡Cámbialo en producción!)
+   JWT_SECRET="mi_clave_super_secreta_para_desarrollo_123"
 
 
 ## 🐳 Base de Datos (Docker)
@@ -45,7 +49,13 @@ Para desarrollo local, utilizamos Docker.
 
 2. **Ejecutar Migraciones (Crear tablas):**
    ```bash
-   npx prisma migrate dev --name init   
+   npx prisma migrate dev --name init
+
+
+## 🔐 Seguridad
+
+- **Autenticación:** JWT (JSON Web Tokens).
+- **Protección:** Middlewares para rutas privadas y roles de administrador.
 
 
 ## ▶️ Ejecución

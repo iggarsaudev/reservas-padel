@@ -19,8 +19,10 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 // Rutas
 const userRoutes = require("./routes/user.routes.js");
 const courtRoutes = require("./routes/court.routes.js");
+const authRoutes = require("./routes/auth.routes.js");
 app.use("/api/users", userRoutes);
 app.use("/api/courts", courtRoutes);
+app.use("/api/auth", authRoutes);
 
 // --- Aquí cargaríamos otras rutas (ej. app.use('/api/partidos', partidoRoutes)) ---
 

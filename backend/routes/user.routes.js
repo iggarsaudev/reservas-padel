@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const validateId = require("../middlewares/validateId.js");
+const authenticateToken = require("../middlewares/authMiddleware");
 
 const {
   getAllUsers,
@@ -59,6 +60,8 @@ const {
  *    get:
  *      summary: Obtiene todos los usuarios
  *      tags: [Users]
+ *      security:
+ *        - bearerAuth: []
  *      responses:
  *        200:
  *          description: Lista de todos los usuarios
@@ -69,7 +72,7 @@ const {
  *                items:
  *                  $ref: '#/components/schemas/User'
  */
-router.get("/", getAllUsers);
+router.get("/", authenticateToken, getAllUsers);
 
 /**
  * @swagger
@@ -98,6 +101,8 @@ router.post("/", createUser);
  *    get:
  *      summary: Obtiene un usuario por su ID
  *      tags: [Users]
+ *      security:
+ *        - bearerAuth: []
  *      parameters:
  *        - in: path
  *          name: id
@@ -113,7 +118,7 @@ router.post("/", createUser);
  *        400:
  *          description: ID inválido
  */
-router.get("/:id", validateId, getUserById);
+router.get("/:id", validateId, authenticateToken, getUserById);
 
 /**
  * @swagger
@@ -121,6 +126,8 @@ router.get("/:id", validateId, getUserById);
  *    put:
  *      summary: Actualiza un usuario existente
  *      tags: [Users]
+ *      security:
+ *        - bearerAuth: []
  *      parameters:
  *        - in: path
  *          name: id
@@ -140,7 +147,7 @@ router.get("/:id", validateId, getUserById);
  *        404:
  *          description: Usuario no encontrado
  */
-router.put("/:id", validateId, updateUser);
+router.put("/:id", validateId, authenticateToken, updateUser);
 
 /**
  * @swagger
@@ -148,6 +155,8 @@ router.put("/:id", validateId, updateUser);
  *    delete:
  *      summary: Elimina un usuario
  *      tags: [Users]
+ *      security:
+ *        - bearerAuth: []
  *      parameters:
  *        - in: path
  *          name: id
@@ -161,7 +170,7 @@ router.put("/:id", validateId, updateUser);
  *        404:
  *          description: Usuario no encontrado
  */
-router.delete("/:id", validateId, deleteUser);
+router.delete("/:id", validateId, authenticateToken, deleteUser);
 
 // Exportamos el router para que index.js lo pueda usar
 module.exports = router;
