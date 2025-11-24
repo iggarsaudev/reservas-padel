@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const validateId = require("../middlewares/validateId.js");
 const authenticateToken = require("../middlewares/authMiddleware");
+const isAdmin = require("../middlewares/isAdmin.js");
 
 const {
   getAllCourts,
@@ -94,7 +95,7 @@ router.get("/", getAllCourts);
  *        500:
  *          description: Error del servidor
  */
-router.post("/", authenticateToken, createCourt);
+router.post("/", authenticateToken, isAdmin, createCourt);
 
 /**
  * @swagger
@@ -146,7 +147,7 @@ router.get("/:id", validateId, getCourtById);
  *        404:
  *          description: Pista no encontrada
  */
-router.put("/:id", validateId, authenticateToken, updateCourt);
+router.put("/:id", validateId, authenticateToken, isAdmin, updateCourt);
 
 /**
  * @swagger
@@ -169,7 +170,7 @@ router.put("/:id", validateId, authenticateToken, updateCourt);
  *        404:
  *          description: Pista no encontrada
  */
-router.delete("/:id", validateId, authenticateToken, deleteCourt);
+router.delete("/:id", validateId, authenticateToken, isAdmin, deleteCourt);
 
 // Exportamos el router para que index.js lo pueda usar
 module.exports = router;

@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const validateId = require("../middlewares/validateId.js");
 const authenticateToken = require("../middlewares/authMiddleware");
+const isAdmin = require("../middlewares/isAdmin.js");
+const isOwnerOrAdmin = require("../middlewares/isOwnerOrAdmin.js");
 
 const {
   getAllUsers,
@@ -72,7 +74,7 @@ const {
  *                items:
  *                  $ref: '#/components/schemas/User'
  */
-router.get("/", authenticateToken, getAllUsers);
+router.get("/", authenticateToken, isAdmin, getAllUsers);
 
 /**
  * @swagger
@@ -118,7 +120,7 @@ router.post("/", createUser);
  *        400:
  *          description: ID inválido
  */
-router.get("/:id", validateId, authenticateToken, getUserById);
+router.get("/:id", validateId, authenticateToken, isOwnerOrAdmin, getUserById);
 
 /**
  * @swagger
@@ -147,7 +149,7 @@ router.get("/:id", validateId, authenticateToken, getUserById);
  *        404:
  *          description: Usuario no encontrado
  */
-router.put("/:id", validateId, authenticateToken, updateUser);
+router.put("/:id", validateId, authenticateToken, isOwnerOrAdmin, updateUser);
 
 /**
  * @swagger
@@ -170,7 +172,13 @@ router.put("/:id", validateId, authenticateToken, updateUser);
  *        404:
  *          description: Usuario no encontrado
  */
-router.delete("/:id", validateId, authenticateToken, deleteUser);
+router.delete(
+  "/:id",
+  validateId,
+  authenticateToken,
+  isOwnerOrAdmin,
+  deleteUser
+);
 
 // Exportamos el router para que index.js lo pueda usar
 module.exports = router;
