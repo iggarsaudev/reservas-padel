@@ -23,7 +23,7 @@ const { login } = require("../controllers/auth.controller");
  *            description: Contraseña del usuario
  *        example:
  *          email: admin@test.com
- *          password: password123
+ *          password: password
  *      LoginResponse:
  *        type: object
  *        properties:

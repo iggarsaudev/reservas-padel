@@ -51,7 +51,7 @@ const {
  *          name: Nacho
  *          surnames: Pérez
  *          email: nacho@test.com
- *          password: password123
+ *          password: password
  *          role: admin
  */
 

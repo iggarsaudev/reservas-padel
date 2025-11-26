@@ -9,14 +9,17 @@ datasource db {
 
 // Usuario
 model User {
-  id         Int      @id @default(autoincrement())
-  name       String   @db.VarChar(255)
-  surnames   String   @db.VarChar(255)
-  email      String   @unique @db.VarChar(255)
-  password   String   @db.VarChar(255)
-  role       Role     @default(user)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  surnames  String   @db.VarChar(255)
+  email     String   @unique @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  role      Role     @default(user)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relación: Un usuario tiene muchos partidos
+  matches Match[]
 
   @@map("users")
 }
@@ -34,8 +37,11 @@ model Court {
   surface     Surface   @default(CRISTAL)
   price       Float
   isAvailable Boolean   @default(true)
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relación: Una pista tiene muchos partidos
+  matches Match[]
 
   @@map("courts")
 }
@@ -48,4 +54,25 @@ enum CourtType {
 enum Surface {
   MURO
   CRISTAL
+}
+
+// Partidas
+model Match {
+  id         Int      @id @default(autoincrement())
+  startTime  DateTime @map("start_time") // Cuándo empieza
+  endTime    DateTime @map("end_time") // Cuándo acaba
+  totalPrice Float    @map("total_price") // Precio pagado (histórico)
+
+  // Relación con Usuario
+  userId Int  @map("user_id")
+  user   User @relation(fields: [userId], references: [id])
+
+  // Relación con Pista
+  courtId Int   @map("court_id")
+  court   Court @relation(fields: [courtId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("matches")
 }
