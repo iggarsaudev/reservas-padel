@@ -6,17 +6,16 @@ El proyecto está dividido en dos partes principales:
 
 ## 📂 Estructura del Proyecto
 
-### 1. [Backend (API)](./backend)
+### 1. [Backend (API)](./backend) ✅ **(Completado)**
 Servidor RESTful construido con **Node.js, Express y MySQL**.
-- Gestión de usuarios y autenticación.
-- Gestión de pistas y reservas.
-- Base de datos dockerizada.
+- Gestión de usuarios, pistas y reservas.
+- Seguridad RBAC y JWT.
+- Testing E2E y Unitario.
 - [Ver documentación técnica del Backend](./backend/README.md)
 
-### 2. [Frontend (Web)](./frontend)
-*(En desarrollo)* Interfaz de usuario construida con **React**.
-- Panel de reservas.
-- Dashboard de administración.
+### 2. [Frontend (Web)](./frontend) 🚧 **(En desarrollo)**
+Interfaz de usuario construida con **React y Tailwind**.
+- *Próximamente...*
 
 ## 🚀 Instalación General
 
