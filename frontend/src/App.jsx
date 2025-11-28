@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Layout from "./components/Layout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Bookings from "./pages/Bookings";
@@ -8,18 +9,16 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Ruta pública (Landing Page) */}
-        <Route path="/" element={<Home />} />
+        {/* Envolvemos todo en el Layout */}
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/reservas" element={<Bookings />} />
 
-        {/* Rutas de Auth */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-
-        {/* Rutas Privadas (Futuro: Protegidas con Token) */}
-        <Route path="/reservas" element={<Bookings />} />
-
-        {/* Cualquier otra ruta -> A la Home */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+          {/* Ruta 404 */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
