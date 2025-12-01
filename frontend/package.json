@@ -12,8 +12,11 @@
   "dependencies": {
     "flowbite": "^4.0.1",
     "flowbite-react": "^0.12.10",
+    "i18next": "^25.6.3",
+    "i18next-browser-languagedetector": "^8.2.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-i18next": "^16.3.5",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.9.6"
   },

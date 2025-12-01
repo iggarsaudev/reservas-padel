@@ -1,0 +1,27 @@
+{
+  "navbar": {
+    "login": "Iniciar Sesión",
+    "register": "Registrarse",
+    "home": "Inicio",
+    "book": "Reservar Pista"
+  },
+  "home": {
+    "welcome": "Bienvenido a",
+    "hero_title": "Juega al mejor",
+    "hero_subtitle": "Reserva tu pista en segundos. Sin llamadas, sin esperas. Gestiona tus partidos y compite con amigos.",
+    "cta_reserve": "Reservar Ahora",
+    "cta_account": "Crear Cuenta",
+    "features_title": "¿Por qué elegir Padel App?",
+    "feature_1_title": "Reserva 24/7",
+    "feature_1_desc": "Accede a la disponibilidad en tiempo real.",
+    "feature_2_title": "Organiza Partidos",
+    "feature_2_desc": "Invita a tus amigos o encuentra rivales.",
+    "feature_3_title": "Pago Seguro",
+    "feature_3_desc": "Olvídate del efectivo. Paga online."
+  },
+  "footer": {
+    "about": "Sobre Nosotros",
+    "contact": "Contacto",
+    "rights": "Todos los derechos reservados."
+  }
+}

@@ -1,9 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
-    // 👇 AQUÍ ESTÁ LA MAGIA: Apuntamos manualmente a los archivos de la librería
     "node_modules/flowbite-react/dist/esm/**/*.js",
   ],
   theme: {

@@ -1,0 +1,27 @@
+{
+  "navbar": {
+    "login": "Login",
+    "register": "Register",
+    "home": "Home",
+    "book": "Book Court"
+  },
+  "home": {
+    "welcome": "Welcome to",
+    "hero_title": "Play the best",
+    "hero_subtitle": "Book your court in seconds. No calls, no waiting. Manage your matches and compete with friends.",
+    "cta_reserve": "Book Now",
+    "cta_account": "Create Account",
+    "features_title": "Why choose Padel App?",
+    "feature_1_title": "24/7 Booking",
+    "feature_1_desc": "Access real-time availability.",
+    "feature_2_title": "Organize Matches",
+    "feature_2_desc": "Invite friends or find rivals.",
+    "feature_3_title": "Secure Payment",
+    "feature_3_desc": "Forget cash. Pay online securely."
+  },
+  "footer": {
+    "about": "About Us",
+    "contact": "Contact",
+    "rights": "All rights reserved."
+  }
+}
