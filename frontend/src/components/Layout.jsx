@@ -1,13 +1,24 @@
 import { useState } from "react";
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
+import { Button, Dropdown, Avatar } from "flowbite-react";
 import { useTranslation } from "react-i18next";
-import { HiGlobeAlt, HiMenu, HiX, HiMoon, HiSun } from "react-icons/hi";
+import {
+  HiGlobeAlt,
+  HiMenu,
+  HiX,
+  HiMoon,
+  HiSun,
+  HiLogout,
+} from "react-icons/hi";
 import { useTheme } from "../context/ThemeContext";
+import { useAuth } from "../context/AuthContext"; // <--- Importamos Auth
 
 function Layout() {
   const path = useLocation().pathname;
+  const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const { theme, toggleTheme } = useTheme();
+  const { user, logout, isAuthenticated } = useAuth(); // <--- Usamos el estado
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -15,6 +26,12 @@ function Layout() {
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
     setIsDropdownOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    setIsMobileMenuOpen(false);
+    navigate("/"); // Nos lleva a la home pública al salir
   };
 
   const currentLabel = i18n.language?.startsWith("en") ? "EN" : "ES";
@@ -31,34 +48,48 @@ function Layout() {
     }
   };
 
-  // Clases comunes para botones de herramientas (Tema/Idioma)
   const headerButtonClass =
     "text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-500 focus:outline-none focus:ring-0 rounded-lg text-sm p-2.5 transition-colors duration-200 flex items-center gap-1";
 
   return (
     <div className="flex flex-col min-h-screen dark:bg-gray-900">
-      {/* NAVBAR */}
       <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded border-b dark:bg-gray-800 dark:border-gray-700 relative z-50">
         <div className="container flex flex-wrap justify-between items-center mx-auto">
-          {/* LOGO */}
           <Link to="/" className="flex items-center">
             <span className="self-center text-xl font-semibold whitespace-nowrap text-primary-600 dark:text-white">
               🎾 Padel App
             </span>
           </Link>
 
-          {/* ZONA DERECHA */}
           <div className="flex items-center md:order-2 gap-1">
-            <div className="hidden md:flex gap-4 mr-2 items-center border-r border-gray-200 dark:border-gray-700 pr-4">
-              <Link to="/login" className={getLinkClass("/login")}>
-                {t("navbar.login")}
-              </Link>
-              <Link to="/register" className={getLinkClass("/register")}>
-                {t("navbar.register")}
-              </Link>
-            </div>
+            {/* LÓGICA DE USUARIO (PC) */}
+            {isAuthenticated ? (
+              // --- SI ESTÁ LOGUEADO ---
+              <div className="hidden md:flex items-center gap-3 mr-4 border-r border-gray-200 dark:border-gray-700 pr-4">
+                <span className="text-sm font-medium text-gray-900 dark:text-white">
+                  {t("navbar.welcome_user", { name: user?.name })}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="text-red-500 hover:text-red-700 font-medium text-sm flex items-center gap-1"
+                  title={t("auth.logout")}
+                >
+                  <HiLogout className="w-5 h-5" />
+                </button>
+              </div>
+            ) : (
+              // --- SI NO ESTÁ LOGUEADO ---
+              <div className="hidden md:flex gap-4 mr-2 items-center border-r border-gray-200 dark:border-gray-700 pr-4">
+                <Link to="/login" className={getLinkClass("/login")}>
+                  {t("navbar.login")}
+                </Link>
+                <Link to="/register" className={getLinkClass("/register")}>
+                  {t("navbar.register")}
+                </Link>
+              </div>
+            )}
 
-            {/* Botón Dark Mode */}
+            {/* HERRAMIENTAS (Tema / Idioma) */}
             <button onClick={toggleTheme} className={headerButtonClass}>
               {theme === "dark" ? (
                 <HiMoon className="w-6 h-6" />
@@ -67,7 +98,6 @@ function Layout() {
               )}
             </button>
 
-            {/* Selector Idioma */}
             <div className="relative">
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -84,7 +114,7 @@ function Layout() {
                     <li>
                       <button
                         onClick={() => changeLanguage("es")}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-primary-600 dark:hover:text-primary-500" // <--- VERDE AQUÍ
+                        className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-primary-600 dark:hover:text-primary-500"
                       >
                         Español
                       </button>
@@ -92,7 +122,7 @@ function Layout() {
                     <li>
                       <button
                         onClick={() => changeLanguage("en")}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-primary-600 dark:hover:text-primary-500" // <--- VERDE AQUÍ
+                        className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-primary-600 dark:hover:text-primary-500"
                       >
                         English
                       </button>
@@ -116,7 +146,7 @@ function Layout() {
             </button>
           </div>
 
-          {/* MENÚ DESPLEGABLE CENTRAL */}
+          {/* MENÚ MÓVIL */}
           <div
             className={`${
               isMobileMenuOpen ? "block" : "hidden"
@@ -142,22 +172,38 @@ function Layout() {
                 </Link>
               </li>
 
-              {/* Login/Registro Móvil */}
+              {/* LÓGICA DE USUARIO (MÓVIL) */}
               <li className="mt-4 md:hidden border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2">
-                <Link
-                  to="/login"
-                  className={getLinkClass("/login")}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {t("navbar.login")}
-                </Link>
-                <Link
-                  to="/register"
-                  className={getLinkClass("/register")}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {t("navbar.register")}
-                </Link>
+                {isAuthenticated ? (
+                  <>
+                    <div className="text-gray-500 dark:text-gray-400 px-3 text-sm">
+                      Hola, {user?.name}
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left py-2 pr-4 pl-3 rounded text-red-500 font-bold hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      {t("auth.logout")}
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      className={getLinkClass("/login")}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {t("navbar.login")}
+                    </Link>
+                    <Link
+                      to="/register"
+                      className={getLinkClass("/register")}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {t("navbar.register")}
+                    </Link>
+                  </>
+                )}
               </li>
             </ul>
           </div>
@@ -169,6 +215,7 @@ function Layout() {
       </main>
 
       <footer className="p-4 bg-white rounded-lg shadow md:px-6 md:py-8 border-t dark:bg-gray-800 dark:border-gray-700">
+        {/* ... (Footer igual que antes) ... */}
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="self-center text-xl font-semibold whitespace-nowrap text-gray-500 dark:text-gray-400">
             Padel App™

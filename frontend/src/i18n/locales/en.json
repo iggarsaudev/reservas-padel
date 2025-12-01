@@ -3,7 +3,8 @@
     "login": "Login",
     "register": "Register",
     "home": "Home",
-    "book": "Book Court"
+    "book": "Book Court",
+    "welcome_user": "Hello, {{name}}"
   },
   "home": {
     "welcome": "Welcome to",
@@ -23,5 +24,27 @@
     "about": "About Us",
     "contact": "Contact",
     "rights": "All rights reserved."
+  },
+  "auth": {
+    "login_title": "Login",
+    "register_title": "Create Account",
+    "email_label": "Email Address",
+    "password_label": "Password",
+    "name_label": "First Name",
+    "surnames_label": "Last Name",
+    "login_button": "Login",
+    "register_button": "Register",
+    "no_account": "Don't have an account?",
+    "yes_account": "Already have an account?",
+    "link_register": "Register here",
+    "link_login": "Log in here",
+    "error_login": "Incorrect credentials",
+    "success_login": "Welcome back, {{name}}!",
+    "success_register": "Account created successfully",
+    "validation_required": "This field is required",
+    "validation_email": "Invalid email",
+    "validation_password_min": "Minimum 6 characters",
+    "logout": "Log Out",
+    "my_bookings": "My Bookings"
   }
 }

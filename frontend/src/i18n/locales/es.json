@@ -3,7 +3,8 @@
     "login": "Iniciar Sesión",
     "register": "Registrarse",
     "home": "Inicio",
-    "book": "Reservar Pista"
+    "book": "Reservar Pista",
+    "welcome_user": "Hola, {{name}}"
   },
   "home": {
     "welcome": "Bienvenido a",
@@ -23,5 +24,27 @@
     "about": "Sobre Nosotros",
     "contact": "Contacto",
     "rights": "Todos los derechos reservados."
+  },
+  "auth": {
+    "login_title": "Iniciar Sesión",
+    "register_title": "Crear Cuenta",
+    "email_label": "Correo Electrónico",
+    "password_label": "Contraseña",
+    "name_label": "Nombre",
+    "surnames_label": "Apellidos",
+    "login_button": "Entrar",
+    "register_button": "Registrarse",
+    "no_account": "¿No tienes cuenta?",
+    "yes_account": "¿Ya tienes cuenta?",
+    "link_register": "Regístrate aquí",
+    "link_login": "Inicia sesión aquí",
+    "error_login": "Credenciales incorrectas",
+    "success_login": "¡Bienvenido de nuevo, {{name}}!",
+    "success_register": "Cuenta creada con éxito",
+    "validation_required": "Este campo es obligatorio",
+    "validation_email": "Email inválido",
+    "validation_password_min": "Mínimo 6 caracteres",
+    "logout": "Cerrar Sesión",
+    "my_bookings": "Mis Reservas"
   }
 }
