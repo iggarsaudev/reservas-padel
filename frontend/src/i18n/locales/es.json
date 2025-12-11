@@ -46,5 +46,17 @@
     "validation_password_min": "Mínimo 6 caracteres",
     "logout": "Cerrar Sesión",
     "my_bookings": "Mis Reservas"
+  },
+  "bookings": {
+    "title": "Nuestras Pistas",
+    "subtitle": "Selecciona la pista donde quieres jugar",
+    "indoor": "Interior",
+    "outdoor": "Exterior",
+    "surface": "Superficie",
+    "price_per_hour": "{{price}}€ / hora",
+    "book_btn": "Ver Disponibilidad",
+    "loading": "Cargando pistas...",
+    "error_loading": "No se pudieron cargar las pistas",
+    "no_courts": "No hay pistas disponibles en este momento."
   }
 }

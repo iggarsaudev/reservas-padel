@@ -46,5 +46,17 @@
     "validation_password_min": "Minimum 6 characters",
     "logout": "Log Out",
     "my_bookings": "My Bookings"
+  },
+  "bookings": {
+    "title": "Our Courts",
+    "subtitle": "Select the court where you want to play",
+    "indoor": "Indoor",
+    "outdoor": "Outdoor",
+    "surface": "Surface",
+    "price_per_hour": "{{price}}€ / hour",
+    "book_btn": "Check Availability",
+    "loading": "Loading courts...",
+    "error_loading": "Could not load courts",
+    "no_courts": "No courts available at this time."
   }
 }
