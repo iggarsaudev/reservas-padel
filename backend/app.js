@@ -23,9 +23,11 @@ const userRoutes = require("./routes/user.routes.js");
 const courtRoutes = require("./routes/court.routes.js");
 const authRoutes = require("./routes/auth.routes.js");
 const matchRoutes = require("./routes/match.routes.js");
+const bookingRoutes = require("./routes/booking.routes.js");
 app.use("/api/users", userRoutes);
 app.use("/api/courts", courtRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/matches", matchRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 module.exports = app;

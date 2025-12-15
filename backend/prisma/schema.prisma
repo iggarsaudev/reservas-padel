@@ -19,7 +19,8 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relación: Un usuario tiene muchos partidos
-  matches Match[]
+  matches  Match[]
+  bookings Booking[]
 
   @@map("users")
 }
@@ -41,7 +42,8 @@ model Court {
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
   // Relación: Una pista tiene muchos partidos
-  matches Match[]
+  matches  Match[]
+  bookings Booking[]
 
   @@map("courts")
 }
@@ -75,4 +77,21 @@ model Match {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("matches")
+}
+
+// Reservas
+model Booking {
+  id        Int      @id @default(autoincrement())
+  date      DateTime @db.Date // Guardaremos solo la fecha (año-mes-dia)
+  time      String // Guardaremos la hora como texto ej: "10:30"
+  createdAt DateTime @default(now())
+
+  // Relaciones
+  userId  Int
+  user    User  @relation(fields: [userId], references: [id])
+  courtId Int
+  court   Court @relation(fields: [courtId], references: [id])
+
+  // Restricción única: No puede haber dos reservas con la misma Pista + Fecha + Hora
+  @@unique([courtId, date, time])
 }

@@ -4,10 +4,13 @@ import Calendar from "react-calendar";
 import { format } from "date-fns";
 import { Button, Card, Badge } from "flowbite-react";
 import { useTranslation } from "react-i18next";
-import { HiArrowLeft, HiClock } from "react-icons/hi";
+import { HiArrowLeft, HiClock, HiBan } from "react-icons/hi";
 import courtService from "../services/courtService";
+import toast from "react-hot-toast";
+import bookingService from "../services/bookingService";
 import "react-calendar/dist/Calendar.css";
 import "../components/CalendarCustom.css";
+import Swal from "sweetalert2";
 
 const TIME_SLOTS = [
   "09:00",
@@ -28,22 +31,82 @@ function BookingCourt() {
 
   const [court, setCourt] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [processing, setProcessing] = useState(false);
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
+  const [occupiedTimes, setOccupiedTimes] = useState([]);
 
+  // Función para procesar la reserva
+  const handleBooking = async () => {
+    if (!selectedTime || !selectedDate) return;
+
+    // Preguntar al usuario antes de hacer nada
+    const result = await Swal.fire({
+      title: "¿Confirmar reserva?",
+      text: `Vas a reservar la pista el ${format(
+        selectedDate,
+        "dd/MM/yyyy"
+      )} a las ${selectedTime}`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#16a34a", // Verde (primary-600 aprox)
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, reservar",
+      cancelButtonText: "Cancelar",
+    });
+
+    // Si el usuario dice que NO, paramos aquí
+    if (!result.isConfirmed) return;
+
+    // Si dice que SÍ, activamos modo "Cargando"
+    setProcessing(true);
+
+    try {
+      const dateString = format(selectedDate, "yyyy-MM-dd");
+
+      await bookingService.create({
+        courtId: parseInt(courtId),
+        date: dateString,
+        time: selectedTime,
+      });
+
+      // Éxito: Mostramos mensaje y redirigimos al cerrar
+      await Swal.fire({
+        title: "¡Reservada!",
+        text: "Tu pista te está esperando.",
+        icon: "success",
+        confirmButtonColor: "#16a34a",
+      });
+
+      navigate("/reservas");
+    } catch (error) {
+      console.error(error);
+      const errorMsg = error.response?.data?.error || "Error al reservar";
+
+      // Error visual
+      Swal.fire({
+        title: "Error",
+        text: errorMsg,
+        icon: "error",
+        confirmButtonColor: "#d33",
+      });
+    } finally {
+      setProcessing(false); // Desactivamos el bloqueo del botón
+    }
+  };
+
+  // Carga inicial de la pista
   useEffect(() => {
     const fetchCourt = async () => {
       try {
-        // Esperar mínimo 800ms para que se vea el spinner suavemente
         const minLoadingTime = new Promise((resolve) =>
           setTimeout(resolve, 800)
         );
-
         const [data] = await Promise.all([
           courtService.getById(courtId),
           minLoadingTime,
         ]);
-
         setCourt(data);
       } catch (error) {
         console.error("Error cargando pista", error);
@@ -54,6 +117,32 @@ function BookingCourt() {
     fetchCourt();
   }, [courtId]);
 
+  // Cargar horas ocupadas al cambiar de día
+  useEffect(() => {
+    const fetchOccupiedTimes = async () => {
+      try {
+        const dateString = format(selectedDate, "yyyy-MM-dd");
+        // Pedimos al backend las horas ocupadas
+        const times = await bookingService.getOccupiedTimes(
+          courtId,
+          dateString
+        );
+        setOccupiedTimes(times);
+
+        // Si la hora seleccionada resulta estar ocupada, la deseleccionamos
+        if (selectedTime && times.includes(selectedTime)) {
+          setSelectedTime(null);
+        }
+      } catch (error) {
+        console.error("Error cargando disponibilidad", error);
+      }
+    };
+
+    if (courtId) {
+      fetchOccupiedTimes();
+    }
+  }, [selectedDate, courtId, selectedTime]);
+
   const handleTimeClick = (time) => {
     if (selectedTime === time) {
       setSelectedTime(null);
@@ -62,7 +151,6 @@ function BookingCourt() {
     }
   };
 
-  // Spinner personalizado
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
@@ -78,7 +166,6 @@ function BookingCourt() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
-      {/* Botón Volver */}
       <button
         onClick={() => navigate("/reservas")}
         className="flex items-center text-gray-500 hover:text-primary-600 mb-6 font-medium transition-colors"
@@ -131,27 +218,44 @@ function BookingCourt() {
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-              {TIME_SLOTS.map((time) => (
-                <button
-                  key={time}
-                  onClick={() => handleTimeClick(time)}
-                  className={`
-                    flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-200
-                    ${
-                      selectedTime === time
-                        ? "border-primary-600 bg-primary-50 text-primary-700 dark:bg-primary-900 dark:text-white dark:border-primary-500 scale-105 shadow-md"
-                        : "border-gray-200 hover:border-primary-300 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-700"
-                    }
-                  `}
-                >
-                  <HiClock
-                    className={`w-6 h-6 mb-2 transition-opacity ${
-                      selectedTime === time ? "opacity-100" : "opacity-50"
-                    }`}
-                  />
-                  <span className="font-bold text-lg">{time}</span>
-                </button>
-              ))}
+              {TIME_SLOTS.map((time) => {
+                // ¿Está ocupada?
+                const isOccupied = occupiedTimes.includes(time);
+
+                return (
+                  <button
+                    key={time}
+                    disabled={isOccupied} // Deshabilitar botón HTML
+                    onClick={() => !isOccupied && handleTimeClick(time)}
+                    className={`
+                      flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-200
+                      ${
+                        isOccupied
+                          ? "bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed opacity-60 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-500" // ESTILO OCUPADO
+                          : selectedTime === time
+                          ? "border-primary-600 bg-primary-50 text-primary-700 dark:bg-primary-900 dark:text-white dark:border-primary-500 scale-105 shadow-md" // ESTILO SELECCIONADO
+                          : "border-gray-200 hover:border-primary-300 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-700" // ESTILO LIBRE
+                      }
+                    `}
+                  >
+                    {/* Icono dinámico: Reloj o Prohibido */}
+                    {isOccupied ? (
+                      <HiBan className="w-6 h-6 mb-2" />
+                    ) : (
+                      <HiClock
+                        className={`w-6 h-6 mb-2 transition-opacity ${
+                          selectedTime === time ? "opacity-100" : "opacity-50"
+                        }`}
+                      />
+                    )}
+
+                    <span className="font-bold text-lg">{time}</span>
+                    {isOccupied && (
+                      <span className="text-xs font-normal">Ocupado</span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Zona de confirmación */}
@@ -169,12 +273,13 @@ function BookingCourt() {
 
                 <Button
                   size="xl"
+                  // Deshabilitamos si está procesando
+                  disabled={processing}
                   className="w-full sm:w-auto bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-                  onClick={() =>
-                    alert(`¡Vamos a reservar para las ${selectedTime}!`)
-                  }
+                  onClick={handleBooking}
                 >
-                  Confirmar Reserva
+                  {/* Cambiamos el texto dinámicamente */}
+                  {processing ? "Reservando..." : "Confirmar Reserva"}
                 </Button>
               </div>
             )}
