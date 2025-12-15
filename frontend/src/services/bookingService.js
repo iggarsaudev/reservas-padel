@@ -16,6 +16,12 @@ const bookingService = {
     });
     return response.data; // Devolverá array ej: ["10:30", "18:00"]
   },
+
+  // Obtener mis reservas
+  getUserBookings: async () => {
+    const response = await api.get("/bookings");
+    return response.data;
+  },
 };
 
 export default bookingService;

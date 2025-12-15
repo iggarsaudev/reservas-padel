@@ -69,4 +69,28 @@ const getBookingsByCourtAndDate = async (req, res) => {
   }
 };
 
-module.exports = { createBooking, getBookingsByCourtAndDate };
+// Obtener mis pistas (Usuario logueado)
+const getUserBookings = async (req, res) => {
+  const userId = req.user.id; // Viene del token
+
+  try {
+    const bookings = await prisma.booking.findMany({
+      where: {
+        userId: parseInt(userId),
+      },
+      include: {
+        court: true, // Incluir datos de la pista
+      },
+      orderBy: {
+        date: "desc", // Las más recientes primero
+      },
+    });
+
+    res.json(bookings);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener tus reservas" });
+  }
+};
+
+module.exports = { createBooking, getBookingsByCourtAndDate, getUserBookings };

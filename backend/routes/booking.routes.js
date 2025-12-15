@@ -62,6 +62,26 @@ router.post("/", authenticateToken, bookingController.createBooking);
 
 /**
  * @swagger
+ * /api/bookings:
+ *   get:
+ *     summary: Obtener historial de reservas del usuario actual
+ *     tags: [Bookings]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de reservas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Booking'
+ */
+router.get("/", authenticateToken, bookingController.getUserBookings);
+
+/**
+ * @swagger
  * /api/bookings/court/{courtId}:
  *   get:
  *     summary: Obtener horas ocupadas de una pista en una fecha específica

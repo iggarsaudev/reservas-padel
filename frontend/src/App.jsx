@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "react-hot-toast";
@@ -8,24 +9,30 @@ import Register from "./pages/Register";
 import Bookings from "./pages/Bookings";
 import BookingCourt from "./pages/BookingCourt";
 import Home from "./pages/Home";
+import MyBookings from "./pages/MyBookings";
 
 function App() {
   return (
     <AuthProvider>
       <ThemeProvider>
         <BrowserRouter>
-          {/* Notificaciones globales */}
           <Toaster position="top-center" reverseOrder={false} />
           <Routes>
-            {/* Envolvemos todo en el Layout */}
             <Route element={<Layout />}>
+              {/* Rutas Públicas */}
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/reservas" element={<Bookings />} />
 
-              {/* Ruta dinámica para las pistas (:courtId es la variable) */}
-              <Route path="/reservas/:courtId" element={<BookingCourt />} />
+              {/* Rutas Protegidas */}
+              {/* Todo lo que esté aquí dentro requiere Token */}
+              <Route element={<ProtectedRoute />}>
+                <Route path="/reservas" element={<Bookings />} />
+                <Route path="/mis-reservas" element={<MyBookings />} />
+
+                {/* Ahora nadie puede intentar reservar una pista sin login */}
+                <Route path="/reservas/:courtId" element={<BookingCourt />} />
+              </Route>
 
               {/* Ruta 404 */}
               <Route path="*" element={<Navigate to="/" replace />} />
