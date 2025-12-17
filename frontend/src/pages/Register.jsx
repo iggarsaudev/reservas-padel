@@ -18,7 +18,7 @@ function Register() {
 
   const onSubmit = async (data) => {
     try {
-      // Llamamos al endpoint de CREAR USUARIO (que es público)
+      // Llamada
       await api.post("/users", {
         name: data.name,
         surnames: data.surnames,
@@ -43,7 +43,7 @@ function Register() {
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          {/* NOMBRE Y APELLIDOS */}
+          {/* Nombre y Apellidos */}
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="w-full">
               <div className="mb-2 block">
@@ -84,7 +84,7 @@ function Register() {
             </div>
           </div>
 
-          {/* EMAIL */}
+          {/* Email */}
           <div>
             <div className="mb-2 block">
               <Label htmlFor="email" value={t("auth.email_label")} />
@@ -109,7 +109,7 @@ function Register() {
             )}
           </div>
 
-          {/* PASSWORD */}
+          {/* Password */}
           <div>
             <div className="mb-2 block">
               <Label htmlFor="password" value={t("auth.password_label")} />
@@ -131,17 +131,24 @@ function Register() {
             )}
           </div>
 
-          {/* BOTÓN SUBMIT */}
+          {/* Botón Enviar */}
           <Button
             type="submit"
-            className="w-full mt-2 bg-primary-600 hover:bg-primary-700 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700"
-            isProcessing={isSubmitting}
+            disabled={isSubmitting}
+            className="w-full bg-primary-600 hover:bg-primary-700 text-white"
           >
-            {t("auth.register_button")}
+            {isSubmitting ? (
+              <>
+                <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                Cargando...
+              </>
+            ) : (
+              t("auth.register_title")
+            )}
           </Button>
         </form>
 
-        {/* LINK A LOGIN */}
+        {/* Link a Login */}
         <div className="flex items-center justify-center mt-4 text-sm">
           <span className="text-gray-500 dark:text-gray-400 mr-2">
             {t("auth.yes_account")}

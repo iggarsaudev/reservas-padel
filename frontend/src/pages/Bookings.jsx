@@ -28,7 +28,7 @@ function Bookings() {
     fetchCourts();
   }, [t]);
 
-  // ESTADO: CARGANDO
+  // Estado Cargando
   if (loading) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
@@ -40,7 +40,7 @@ function Bookings() {
     );
   }
 
-  // ESTADO: ERROR
+  // Estado Error
   if (error) {
     return (
       <div className="container mx-auto mt-10 px-4">
@@ -53,7 +53,7 @@ function Bookings() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* CABECERA */}
+      {/* Cabecera */}
       <div className="text-center mb-10">
         <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-2">
           {t("bookings.title")}
@@ -63,7 +63,7 @@ function Bookings() {
         </p>
       </div>
 
-      {/* LISTADO DE PISTAS (GRID) */}
+      {/* Listado de pistas */}
       {courts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
           {courts.map((court) => (
@@ -71,7 +71,7 @@ function Bookings() {
           ))}
         </div>
       ) : (
-        // ESTADO: NO HAY PISTAS
+        // Estado No hay pistas
         <div className="text-center py-20 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <p className="text-gray-500 dark:text-gray-400 text-xl">
             {t("bookings.no_courts")}

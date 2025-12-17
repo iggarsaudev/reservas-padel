@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { Button, Dropdown, Avatar } from "flowbite-react";
 import { useTranslation } from "react-i18next";
 import {
   HiGlobeAlt,
@@ -11,14 +10,14 @@ import {
   HiLogout,
 } from "react-icons/hi";
 import { useTheme } from "../context/ThemeContext";
-import { useAuth } from "../context/AuthContext"; // <--- Importamos Auth
+import { useAuth } from "../context/AuthContext";
 
 function Layout() {
   const path = useLocation().pathname;
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const { theme, toggleTheme } = useTheme();
-  const { user, logout, isAuthenticated } = useAuth(); // <--- Usamos el estado
+  const { user, logout, isAuthenticated } = useAuth();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -62,10 +61,10 @@ function Layout() {
           </Link>
 
           <div className="flex items-center md:order-2 gap-1">
-            {/* LÓGICA DE USUARIO (PC) */}
             {isAuthenticated ? (
-              // --- SI ESTÁ LOGUEADO ---
+              // Si está logado
               <div className="hidden md:flex items-center gap-3 mr-4 border-r border-gray-200 dark:border-gray-700 pr-4">
+                <Link to="/mis-reservas">{t("auth.my_bookings")}</Link>
                 <span className="text-sm font-medium text-gray-900 dark:text-white">
                   {t("navbar.welcome_user", { name: user?.name })}
                 </span>
@@ -78,7 +77,7 @@ function Layout() {
                 </button>
               </div>
             ) : (
-              // --- SI NO ESTÁ LOGUEADO ---
+              // Si no está logado
               <div className="hidden md:flex gap-4 mr-2 items-center border-r border-gray-200 dark:border-gray-700 pr-4">
                 <Link to="/login" className={getLinkClass("/login")}>
                   {t("navbar.login")}
@@ -89,7 +88,7 @@ function Layout() {
               </div>
             )}
 
-            {/* HERRAMIENTAS (Tema / Idioma) */}
+            {/* Tema / Idioma */}
             <button onClick={toggleTheme} className={headerButtonClass}>
               {theme === "dark" ? (
                 <HiMoon className="w-6 h-6" />
@@ -132,7 +131,7 @@ function Layout() {
               )}
             </div>
 
-            {/* Botón Hamburguesa */}
+            {/* Botón hamburguesa móvil */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               type="button"
@@ -146,7 +145,7 @@ function Layout() {
             </button>
           </div>
 
-          {/* MENÚ MÓVIL */}
+          {/* Menú móvil */}
           <div
             className={`${
               isMobileMenuOpen ? "block" : "hidden"
@@ -172,7 +171,6 @@ function Layout() {
                 </Link>
               </li>
 
-              {/* LÓGICA DE USUARIO (MÓVIL) */}
               <li className="mt-4 md:hidden border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2">
                 {isAuthenticated ? (
                   <>
@@ -215,7 +213,7 @@ function Layout() {
       </main>
 
       <footer className="p-4 bg-white rounded-lg shadow md:px-6 md:py-8 border-t dark:bg-gray-800 dark:border-gray-700">
-        {/* ... (Footer igual que antes) ... */}
+        {/* Footer */}
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="self-center text-xl font-semibold whitespace-nowrap text-gray-500 dark:text-gray-400">
             Padel App™

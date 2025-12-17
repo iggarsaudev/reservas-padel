@@ -1,46 +1,58 @@
-import { Card, Badge } from "flowbite-react";
-import { format, parseISO } from "date-fns";
-import { HiCalendar, HiClock, HiLocationMarker } from "react-icons/hi";
+import { Card, Badge, Button } from "flowbite-react";
+import { HiCalendar, HiClock, HiLocationMarker, HiTrash } from "react-icons/hi";
 
-function BookingCard({ booking, type }) {
-  // Convertimos la fecha string a objeto fecha
-  const dateObj = parseISO(booking.date);
+// Recibimos booking, type y la nueva prop onCancel
+function BookingCard({ booking, type, onCancel }) {
+  // Formatear fecha para que se vea bonita (ej: Sábado, 12 Octubre)
+  const formattedDate = new Date(booking.date).toLocaleDateString("es-ES", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   return (
-    <Card
-      className={`border-none shadow-md ${
-        type === "upcoming"
-          ? "ring-2 ring-primary-100 dark:ring-primary-900"
-          : ""
-      }`}
-    >
-      <div className="flex justify-between items-start">
-        <div>
-          <h5 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
-            {booking.court.name}
+    <div className="max-w-sm">
+      <Card className="dark:bg-gray-800 shadow-lg border-l-4 border-l-primary-500 overflow-hidden relative">
+        {/* Cabecera de la tarjeta */}
+        <div className="flex justify-between items-start mb-2">
+          <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white flex items-center gap-2">
+            <HiLocationMarker className="text-primary-600" />
+            Pista {booking.courtId}
           </h5>
-          <span className="text-xs text-gray-500">{booking.court.surface}</span>
+          <Badge color={type === "upcoming" ? "success" : "gray"}>
+            {type === "upcoming" ? "Confirmada" : "Finalizada"}
+          </Badge>
         </div>
-        <Badge color={type === "upcoming" ? "success" : "gray"}>
-          {type === "upcoming" ? "ACTIVA" : "FINALIZADA"}
-        </Badge>
-      </div>
 
-      <div className="space-y-3 mt-2">
-        <div className="flex items-center text-gray-700 dark:text-gray-300">
-          <HiCalendar className="mr-2 h-5 w-5 text-gray-400" />
-          <span className="font-medium">{format(dateObj, "dd/MM/yyyy")}</span>
+        {/* Detalles */}
+        <div className="space-y-3 text-gray-700 dark:text-gray-300">
+          <div className="flex items-center gap-2">
+            <HiCalendar className="w-5 h-5 text-gray-400" />
+            <span className="capitalize">{formattedDate}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <HiClock className="w-5 h-5 text-gray-400" />
+            <span className="font-semibold text-lg">{booking.time}</span>
+          </div>
         </div>
-        <div className="flex items-center text-gray-700 dark:text-gray-300">
-          <HiClock className="mr-2 h-5 w-5 text-gray-400" />
-          <span className="font-medium text-xl">{booking.time}</span>
-        </div>
-        <div className="flex items-center text-gray-700 dark:text-gray-300">
-          <HiLocationMarker className="mr-2 h-5 w-5 text-gray-400" />
-          <span>{booking.court.type}</span>
-        </div>
-      </div>
-    </Card>
+
+        {/* Botón de Cancelar (Solo si es upcoming y existe la función onCancel) */}
+        {type === "upcoming" && onCancel && (
+          <div className="mt-4 pt-4 border-t dark:border-gray-700">
+            <Button
+              color="failure"
+              size="sm"
+              className="w-full"
+              onClick={onCancel}
+            >
+              <HiTrash className="mr-2 h-4 w-4" />
+              Cancelar Reserva
+            </Button>
+          </div>
+        )}
+      </Card>
+    </div>
   );
 }
 

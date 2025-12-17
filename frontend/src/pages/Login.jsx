@@ -43,7 +43,7 @@ function Login() {
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          {/* EMAIL */}
+          {/* Email */}
           <div>
             <div className="mb-2 block">
               <Label htmlFor="email" value={t("auth.email_label")} />
@@ -68,7 +68,7 @@ function Login() {
             )}
           </div>
 
-          {/* PASSWORD */}
+          {/* Password */}
           <div>
             <div className="mb-2 block">
               <Label htmlFor="password" value={t("auth.password_label")} />
@@ -93,17 +93,24 @@ function Login() {
             )}
           </div>
 
-          {/* BOTÓN SUBMIT */}
+          {/* Botón Enviar */}
           <Button
             type="submit"
-            className="w-full mt-2 bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700"
-            isProcessing={isSubmitting} // Muestra spinner si está cargando
+            disabled={isSubmitting}
+            className="w-full bg-primary-600 hover:bg-primary-700 text-white"
           >
-            {t("auth.login_button")}
+            {isSubmitting ? (
+              <>
+                <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                Cargando...
+              </>
+            ) : (
+              t("auth.login_title")
+            )}
           </Button>
         </form>
 
-        {/* LINK A REGISTRO */}
+        {/* Link a Registro */}
         <div className="flex items-center justify-center mt-4 text-sm">
           <span className="text-gray-500 dark:text-gray-400 mr-2">
             {t("auth.no_account")}

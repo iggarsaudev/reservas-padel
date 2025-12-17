@@ -6,10 +6,57 @@ import { HiTicket } from "react-icons/hi";
 import toast from "react-hot-toast";
 import bookingService from "../services/bookingService";
 import BookingCard from "../components/BookingCard";
+import Swal from "sweetalert2";
 
 function MyBookings() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Función para cancelar la reserva
+  const handleCancel = async (bookingId) => {
+    // Preguntar al usuario antes de hacer nada
+    const result = await Swal.fire({
+      title: "¿Cancelar reserva?",
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, cancelar",
+      cancelButtonText: "No, mantener",
+    });
+
+    // Si el usuario cancela la alerta, no hacemos nada
+    if (!result.isConfirmed) return;
+
+    try {
+      // Llamamos a la API
+      await bookingService.cancelBooking(bookingId);
+
+      // Éxito: Actualizamos la lista
+      setBookings((prevBookings) =>
+        prevBookings.filter((b) => b.id !== bookingId)
+      );
+
+      Swal.fire({
+        title: "¡Cancelada!",
+        text: "La reserva ha sido eliminada correctamente.",
+        icon: "success",
+        confirmButtonColor: "#16a34a",
+      });
+    } catch (error) {
+      console.error(error);
+      const errorMsg = error.response?.data?.error || "Error al cancelar";
+
+      // Error
+      Swal.fire({
+        title: "Error",
+        text: errorMsg,
+        icon: "error",
+        confirmButtonColor: "#d33",
+      });
+    }
+  };
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -71,7 +118,12 @@ function MyBookings() {
           </h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {upcomingBookings.map((booking) => (
-              <BookingCard key={booking.id} booking={booking} type="upcoming" />
+              <BookingCard
+                key={booking.id}
+                booking={booking}
+                type="upcoming"
+                onCancel={() => handleCancel(booking.id)}
+              />
             ))}
           </div>
         </div>

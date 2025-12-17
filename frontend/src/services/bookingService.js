@@ -22,6 +22,12 @@ const bookingService = {
     const response = await api.get("/bookings");
     return response.data;
   },
+
+  // Cancelar una reserva
+  cancelBooking: async (id) => {
+    const response = await api.delete(`/bookings/${id}`);
+    return response.data;
+  },
 };
 
 export default bookingService;
