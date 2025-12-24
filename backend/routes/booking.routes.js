@@ -115,4 +115,42 @@ router.get("/", authenticateToken, bookingController.getUserBookings);
  */
 router.get("/court/:courtId", bookingController.getBookingsByCourtAndDate);
 
+/**
+ * @swagger
+ * /api/bookings/{id}:
+ *   delete:
+ *     summary: Cancelar una reserva
+ *     description: Elimina una reserva existente si pertenece al usuario autenticado.
+ *     tags: [Bookings]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID único de la reserva a cancelar
+ *     responses:
+ *       200:
+ *         description: Reserva cancelada con éxito
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Reserva cancelada correctamente"
+ *       401:
+ *         description: No autorizado (Token no proporcionado)
+ *       403:
+ *         description: Prohibido (La reserva no pertenece al usuario)
+ *       404:
+ *         description: Reserva no encontrada
+ *       500:
+ *         description: Error en el servidor
+ */
+router.delete("/:id", authenticateToken, bookingController.deleteBooking);
+
 module.exports = router;

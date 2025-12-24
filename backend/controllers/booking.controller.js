@@ -93,4 +93,44 @@ const getUserBookings = async (req, res) => {
   }
 };
 
-module.exports = { createBooking, getBookingsByCourtAndDate, getUserBookings };
+// Cancelar una reserva
+const deleteBooking = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user.id;
+
+  try {
+    // Buscamos la reserva para ver si existe y de quién es
+    const booking = await prisma.booking.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    // Si no existe
+    if (!booking) {
+      return res.status(404).json({ error: "Reserva no encontrada" });
+    }
+
+    // Seguridad: Verificamos que la reserva pertenezca al usuario que intenta borrarla
+    if (booking.userId !== userId) {
+      return res
+        .status(403)
+        .json({ error: "No tienes permiso para cancelar esta reserva" });
+    }
+
+    // Procedemos a borrar
+    await prisma.booking.delete({
+      where: { id: parseInt(id) },
+    });
+
+    res.json({ message: "Reserva cancelada correctamente" });
+  } catch (error) {
+    console.error("Error al cancelar:", error);
+    res.status(500).json({ error: "Error al cancelar la reserva" });
+  }
+};
+
+module.exports = {
+  createBooking,
+  getBookingsByCourtAndDate,
+  getUserBookings,
+  deleteBooking,
+};
