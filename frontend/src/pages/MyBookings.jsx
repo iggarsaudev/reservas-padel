@@ -7,8 +7,11 @@ import toast from "react-hot-toast";
 import bookingService from "../services/bookingService";
 import BookingCard from "../components/BookingCard";
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 function MyBookings() {
+  const { t } = useTranslation();
+
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,14 +19,14 @@ function MyBookings() {
   const handleCancel = async (bookingId) => {
     // Preguntar al usuario antes de hacer nada
     const result = await Swal.fire({
-      title: "¿Cancelar reserva?",
-      text: "Esta acción no se puede deshacer.",
+      title: t("my_bookings.cancel_modal_title"),
+      text: t("my_bookings.cancel_modal_text"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
-      confirmButtonText: "Sí, cancelar",
-      cancelButtonText: "No, mantener",
+      confirmButtonText: t("my_bookings.yes_cancel"),
+      cancelButtonText: t("my_bookings.no_keep"),
     });
 
     // Si el usuario cancela la alerta, no hacemos nada
@@ -93,18 +96,18 @@ function MyBookings() {
     <div className="container mx-auto px-4 py-8 max-w-5xl">
       <h1 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white flex items-center gap-3">
         <HiTicket className="text-primary-600" />
-        Mis Reservas
+        {t("my_bookings.title")}
       </h1>
 
       {/* Sin partidos */}
       {bookings.length === 0 && (
         <div className="text-center py-20 bg-gray-50 dark:bg-gray-800 rounded-xl">
           <p className="text-xl text-gray-500 mb-6">
-            Aún no has jugado ningún partido.
+            {t("my_bookings.no_bookings")}
           </p>
           <Link to="/reservas">
             <Button size="xl" gradientDuoTone="greenToBlue">
-              ¡Reserva tu primera pista!
+              {t("my_bookings.book_first_btn")}
             </Button>
           </Link>
         </div>
@@ -114,7 +117,7 @@ function MyBookings() {
       {upcomingBookings.length > 0 && (
         <div className="mb-12 animate-fade-in-up">
           <h2 className="text-xl font-bold mb-4 text-gray-700 dark:text-gray-300 border-b pb-2">
-            Próximos Partidos 🎾
+            {t("my_bookings.upcoming_title")} 🎾
           </h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {upcomingBookings.map((booking) => (
@@ -133,7 +136,7 @@ function MyBookings() {
       {pastBookings.length > 0 && (
         <div className="animate-fade-in-up delay-100">
           <h2 className="text-xl font-bold mb-4 text-gray-500 dark:text-gray-400 border-b pb-2">
-            Historial
+            {t("my_bookings.history_title")}
           </h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 opacity-75 grayscale hover:grayscale-0 transition-all">
             {pastBookings.map((booking) => (

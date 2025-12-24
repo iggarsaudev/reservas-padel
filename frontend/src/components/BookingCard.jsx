@@ -1,8 +1,11 @@
 import { Card, Badge, Button } from "flowbite-react";
 import { HiCalendar, HiClock, HiLocationMarker, HiTrash } from "react-icons/hi";
+import { useTranslation } from "react-i18next";
 
 // Recibimos booking, type y la nueva prop onCancel
 function BookingCard({ booking, type, onCancel }) {
+  const { t, i18n } = useTranslation();
+
   // Formatear fecha para que se vea bonita (ej: Sábado, 12 Octubre)
   const formattedDate = new Date(booking.date).toLocaleDateString("es-ES", {
     weekday: "long",
@@ -18,10 +21,12 @@ function BookingCard({ booking, type, onCancel }) {
         <div className="flex justify-between items-start mb-2">
           <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white flex items-center gap-2">
             <HiLocationMarker className="text-primary-600" />
-            Pista {booking.courtId}
+            {t("my_bookings.court", { id: booking.court.name })}
           </h5>
           <Badge color={type === "upcoming" ? "success" : "gray"}>
-            {type === "upcoming" ? "Confirmada" : "Finalizada"}
+            {type === "upcoming"
+              ? t("my_bookings.status_confirmed")
+              : t("my_bookings.status_finished")}
           </Badge>
         </div>
 
@@ -47,7 +52,7 @@ function BookingCard({ booking, type, onCancel }) {
               onClick={onCancel}
             >
               <HiTrash className="mr-2 h-4 w-4" />
-              Cancelar Reserva
+              {t("my_bookings.cancel_btn")}
             </Button>
           </div>
         )}

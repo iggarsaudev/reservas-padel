@@ -6,7 +6,6 @@ import { Button, Card, Badge } from "flowbite-react";
 import { useTranslation } from "react-i18next";
 import { HiArrowLeft, HiClock, HiBan } from "react-icons/hi";
 import courtService from "../services/courtService";
-import toast from "react-hot-toast";
 import bookingService from "../services/bookingService";
 import "react-calendar/dist/Calendar.css";
 import "../components/CalendarCustom.css";
@@ -27,7 +26,7 @@ const TIME_SLOTS = [
 function BookingCourt() {
   const { courtId } = useParams();
   const navigate = useNavigate();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [court, setCourt] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -41,19 +40,21 @@ function BookingCourt() {
   const handleBooking = async () => {
     if (!selectedTime || !selectedDate) return;
 
+    const dateFormatted = format(selectedDate, "dd/MM/yyyy");
+
     // Preguntar al usuario antes de hacer nada
     const result = await Swal.fire({
-      title: "¿Confirmar reserva?",
-      text: `Vas a reservar la pista el ${format(
-        selectedDate,
-        "dd/MM/yyyy"
-      )} a las ${selectedTime}`,
+      title: t("bookings.confirm_title"),
+      text: t("bookings.confirm_text", {
+        date: dateFormatted,
+        time: selectedTime,
+      }),
       icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#16a34a", // Verde (primary-600 aprox)
+      confirmButtonColor: "#16a34a",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Sí, reservar",
-      cancelButtonText: "Cancelar",
+      confirmButtonText: t("bookings.confirm_yes"),
+      cancelButtonText: t("bookings.confirm_cancel"),
     });
 
     // Si el usuario dice que NO, paramos aquí
@@ -73,8 +74,8 @@ function BookingCourt() {
 
       // Éxito: Mostramos mensaje y redirigimos al cerrar
       await Swal.fire({
-        title: "¡Reservada!",
-        text: "Tu pista te está esperando.",
+        title: t("bookings.success_title"),
+        text: t("bookings.success_text"),
         icon: "success",
         confirmButtonColor: "#16a34a",
       });
@@ -82,11 +83,12 @@ function BookingCourt() {
       navigate("/reservas");
     } catch (error) {
       console.error(error);
-      const errorMsg = error.response?.data?.error || "Error al reservar";
+      const errorMsg =
+        error.response?.data?.error || t("bookings.default_error");
 
       // Error visual
       Swal.fire({
-        title: "Error",
+        title: t("bookings.error_title"),
         text: errorMsg,
         icon: "error",
         confirmButtonColor: "#d33",
@@ -193,7 +195,7 @@ function BookingCourt() {
 
           <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg">
             <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">
-              Selecciona Fecha
+              {t("bookings.select_date")}
             </h3>
             <Calendar
               onChange={setSelectedDate}
@@ -210,10 +212,12 @@ function BookingCourt() {
           <Card className="dark:bg-gray-800 h-full border-none shadow-lg">
             <div className="border-b pb-4 mb-4 border-gray-200 dark:border-gray-700">
               <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                Horarios para el {format(selectedDate, "dd/MM/yyyy")}
+                {t("bookings.schedule_title", {
+                  date: format(selectedDate, "dd/MM/yyyy"),
+                })}
               </h3>
               <p className="text-gray-500 text-sm mt-1">
-                Selecciona una hora para continuar
+                {t("bookings.schedule_subtitle")}
               </p>
             </div>
 
@@ -251,7 +255,9 @@ function BookingCourt() {
 
                     <span className="font-bold text-lg">{time}</span>
                     {isOccupied && (
-                      <span className="text-xs font-normal">Ocupado</span>
+                      <span className="text-xs font-normal">
+                        {t("bookings.status_occupied")}
+                      </span>
                     )}
                   </button>
                 );
@@ -263,7 +269,7 @@ function BookingCourt() {
               <div className="mt-8 pt-4 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row justify-end items-center gap-4 animate-fade-in">
                 <div className="text-right hidden sm:block">
                   <p className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                    Resumen de reserva
+                    {t("bookings.summary_label")}
                   </p>
                   <p className="font-bold text-lg text-gray-900 dark:text-white">
                     {format(selectedDate, "dd/MM/yyyy")} a las{" "}
@@ -279,7 +285,9 @@ function BookingCourt() {
                   onClick={handleBooking}
                 >
                   {/* Cambiamos el texto dinámicamente */}
-                  {processing ? "Reservando..." : "Confirmar Reserva"}
+                  {processing
+                    ? t("bookings.btn_reserving")
+                    : t("bookings.btn_confirm")}
                 </Button>
               </div>
             )}
