@@ -12,6 +12,7 @@ import Home from "./pages/Home";
 import MyBookings from "./pages/MyBookings";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminRoute from "./components/AdminRoute";
+import AdminCourts from "./pages/AdminCourts";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
               {/* Ruta Admin */}
               <Route element={<AdminRoute />}>
                 <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/pistas" element={<AdminCourts />} />
               </Route>
 
               {/* Ruta 404 */}

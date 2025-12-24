@@ -99,6 +99,7 @@
     "title": "Panel de Administración 🛡️",
     "loading": "Cargando panel...",
     "no_bookings": "No hay reservas registradas en el sistema.",
+    "manage_courts": "Gestionar pistas",
     "table": {
       "id": "ID",
       "user": "Usuario",
@@ -118,6 +119,34 @@
       "success_text": "La reserva ha sido eliminada.",
       "error_title": "Error",
       "error_text": "No se pudo eliminar la reserva."
+    }
+  },
+  "courts_admin": {
+    "title": "Gestión de Pistas 🎾",
+    "btn_new": "Nueva Pista",
+    "table": {
+      "name": "Nombre",
+      "type": "Tipo",
+      "surface": "Superficie",
+      "price": "Precio",
+      "actions": "Acciones"
+    },
+    "modal": {
+      "title_create": "Crear Nueva Pista",
+      "title_edit": "Editar Pista",
+      "name_label": "Nombre de la pista",
+      "type_label": "Tipo (Indoor/Outdoor)",
+      "surface_label": "Superficie",
+      "price_label": "Precio por hora (€)",
+      "btn_save": "Guardar",
+      "btn_cancel": "Cancelar"
+    },
+    "alerts": {
+      "create_success": "Pista creada correctamente",
+      "update_success": "Pista actualizada correctamente",
+      "delete_confirm_title": "¿Eliminar pista?",
+      "delete_confirm_text": "¡Cuidado! Si borras la pista, dejará de estar disponible. (Solo se puede borrar si no tiene reservas futuras)",
+      "delete_success": "Pista eliminada"
     }
   }
 }

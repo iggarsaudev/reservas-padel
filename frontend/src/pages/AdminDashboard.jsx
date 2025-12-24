@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import bookingService from "../services/bookingService";
 import Swal from "sweetalert2";
 import { format } from "date-fns";
+import { Link } from "react-router-dom";
 
 function AdminDashboard() {
   const { t } = useTranslation();
@@ -69,9 +70,17 @@ function AdminDashboard() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-        {t("admin.title")}
-      </h1>
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          {t("admin.title")}
+        </h1>
+
+        <Link to="/admin/pistas">
+          <Button className="bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700 text-white">
+            {t("admin.manage_courts")} 🎾
+          </Button>
+        </Link>
+      </div>
 
       <Card className="dark:bg-gray-800 shadow-xl overflow-hidden p-0">
         <div className="overflow-x-auto relative">

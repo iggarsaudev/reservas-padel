@@ -99,6 +99,7 @@
     "title": "Admin Panel 🛡️",
     "loading": "Loading panel...",
     "no_bookings": "No bookings registered in the system.",
+    "manage_courts": "Manage courts",
     "table": {
       "id": "ID",
       "user": "User",
@@ -118,6 +119,34 @@
       "success_text": "The booking has been deleted.",
       "error_title": "Error",
       "error_text": "The reservation could not be deleted."
+    }
+  },
+  "courts_admin": {
+    "title": "Court Management 🎾",
+    "btn_new": "New Court",
+    "table": {
+      "name": "Name",
+      "type": "Type",
+      "surface": "Surface",
+      "price": "Price",
+      "actions": "Actions"
+    },
+    "modal": {
+      "title_create": "Create New Court",
+      "title_edit": "Edit Court",
+      "name_label": "Court Name",
+      "type_label": "Type (Indoor/Outdoor)",
+      "surface_label": "Surface",
+      "price_label": "Price per hour (€)",
+      "btn_save": "Save",
+      "btn_cancel": "Cancel"
+    },
+    "alerts": {
+      "create_success": "Court created successfully",
+      "update_success": "Track updated successfully",
+      "delete_confirm_title": "Delete track?",
+      "delete_confirm_text": "Caution! If you delete the track, it will no longer be available. (It can only be deleted if it has no future bookings)",
+      "delete_success": "Track deleted"
     }
   }
 }
