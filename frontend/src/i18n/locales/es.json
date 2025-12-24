@@ -4,6 +4,9 @@
     "register": "Registrarse",
     "home": "Inicio",
     "book": "Reservar Pista",
+    "my_bookings": "Mis Reservas",
+    "admin_panel": "Administración",
+    "logout": "Cerrar Sesión",
     "welcome_user": "Hola, {{name}}"
   },
   "home": {
@@ -43,9 +46,7 @@
     "success_register": "Cuenta creada con éxito",
     "validation_required": "Este campo es obligatorio",
     "validation_email": "Email inválido",
-    "validation_password_min": "Mínimo 6 caracteres",
-    "logout": "Cerrar Sesión",
-    "my_bookings": "Mis Reservas"
+    "validation_password_min": "Mínimo 6 caracteres"
   },
   "bookings": {
     "title": "Nuestras Pistas",
@@ -93,5 +94,30 @@
     "court": "Pista {{id}}",
     "status_confirmed": "Confirmada",
     "status_finished": "Finalizada"
+  },
+  "admin": {
+    "title": "Panel de Administración 🛡️",
+    "loading": "Cargando panel...",
+    "no_bookings": "No hay reservas registradas en el sistema.",
+    "table": {
+      "id": "ID",
+      "user": "Usuario",
+      "court": "Pista",
+      "date": "Fecha",
+      "time": "Hora",
+      "actions": "Acciones",
+      "delete_btn": "Eliminar"
+    },
+    "alerts": {
+      "load_error": "No se pudieron cargar las reservas",
+      "delete_title": "¿Eliminar reserva?",
+      "delete_text": "Esta acción borrará la reserva del usuario permanentemente.",
+      "delete_confirm": "Sí, eliminar",
+      "delete_cancel": "Cancelar",
+      "success_title": "Eliminado",
+      "success_text": "La reserva ha sido eliminada.",
+      "error_title": "Error",
+      "error_text": "No se pudo eliminar la reserva."
+    }
   }
 }

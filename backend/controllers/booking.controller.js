@@ -97,6 +97,7 @@ const getUserBookings = async (req, res) => {
 const deleteBooking = async (req, res) => {
   const { id } = req.params;
   const userId = req.user.id;
+  const userRole = req.user.role;
 
   try {
     // Buscamos la reserva para ver si existe y de quién es
@@ -110,10 +111,10 @@ const deleteBooking = async (req, res) => {
     }
 
     // Seguridad: Verificamos que la reserva pertenezca al usuario que intenta borrarla
-    if (booking.userId !== userId) {
+    if (booking.userId !== userId && userRole !== "admin") {
       return res
         .status(403)
-        .json({ error: "No tienes permiso para cancelar esta reserva" });
+        .json({ error: "No tienes permiso para eliminar esta reserva" });
     }
 
     // Procedemos a borrar
@@ -128,9 +129,37 @@ const deleteBooking = async (req, res) => {
   }
 };
 
+// Obtener TODAS las reservas (Solo Admin)
+const getAllBookings = async (req, res) => {
+  try {
+    const bookings = await prisma.booking.findMany({
+      include: {
+        court: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            surnames: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: {
+        date: "desc", // Las más recientes primero
+      },
+    });
+
+    res.json(bookings);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener todas las reservas" });
+  }
+};
+
 module.exports = {
   createBooking,
   getBookingsByCourtAndDate,
   getUserBookings,
   deleteBooking,
+  getAllBookings,
 };

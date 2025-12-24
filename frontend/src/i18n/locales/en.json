@@ -3,7 +3,10 @@
     "login": "Login",
     "register": "Register",
     "home": "Home",
-    "book": "Book Court",
+    "book": "Book a Court",
+    "my_bookings": "My Bookings",
+    "admin_panel": "Administration",
+    "logout": "Logout",
     "welcome_user": "Hello, {{name}}"
   },
   "home": {
@@ -43,9 +46,7 @@
     "success_register": "Account created successfully",
     "validation_required": "This field is required",
     "validation_email": "Invalid email",
-    "validation_password_min": "Minimum 6 characters",
-    "logout": "Log Out",
-    "my_bookings": "My Bookings"
+    "validation_password_min": "Minimum 6 characters"
   },
   "bookings": {
     "title": "Our Courts",
@@ -93,5 +94,30 @@
     "court": "Court {{id}}",
     "status_confirmed": "Confirmed",
     "status_finished": "Finished"
+  },
+  "admin": {
+    "title": "Admin Panel 🛡️",
+    "loading": "Loading panel...",
+    "no_bookings": "No bookings registered in the system.",
+    "table": {
+      "id": "ID",
+      "user": "User",
+      "court": "Court",
+      "date": "Date",
+      "time": "Time",
+      "actions": "Actions",
+      "delete_btn": "Delete"
+    },
+    "alerts": {
+      "load_error": "Could not load bookings",
+      "delete_title": "Delete booking?",
+      "delete_text": "This action will permanently delete the user's booking.",
+      "delete_confirm": "Yes, delete",
+      "delete_cancel": "Cancel",
+      "success_title": "Deleted",
+      "success_text": "The booking has been deleted.",
+      "error_title": "Error",
+      "error_text": "The reservation could not be deleted."
+    }
   }
 }

@@ -8,6 +8,7 @@ import {
   HiMoon,
   HiSun,
   HiLogout,
+  HiShieldCheck,
 } from "react-icons/hi";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
@@ -30,7 +31,7 @@ function Layout() {
   const handleLogout = () => {
     logout();
     setIsMobileMenuOpen(false);
-    navigate("/"); // Nos lleva a la home pública al salir
+    navigate("/");
   };
 
   const currentLabel = i18n.language?.startsWith("en") ? "EN" : "ES";
@@ -62,22 +63,40 @@ function Layout() {
 
           <div className="flex items-center md:order-2 gap-1">
             {isAuthenticated ? (
-              // Si está logado
-              <div className="hidden md:flex items-center gap-3 mr-4 border-r border-gray-200 dark:border-gray-700 pr-4">
-                <Link to="/mis-reservas">{t("auth.my_bookings")}</Link>
-                <span className="text-sm font-medium text-gray-900 dark:text-white">
+              // --- MENÚ ESCRITORIO LOGUEADO (Visible solo en MD o superior) ---
+              <div className="hidden md:flex items-center gap-4 mr-4 border-r border-gray-200 dark:border-gray-700 pr-4">
+                {/* ENLACE ADMIN ESCRITORIO */}
+                {user?.role === "admin" && (
+                  <Link
+                    to="/admin"
+                    className="flex items-center gap-1 font-bold text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400 transition-colors"
+                  >
+                    <HiShieldCheck className="w-4 h-4" />
+                    {t("navbar.admin_panel")}
+                  </Link>
+                )}
+
+                <Link
+                  to="/mis-reservas"
+                  className="hover:text-primary-600 dark:hover:text-primary-500 transition-colors"
+                >
+                  {t("navbar.my_bookings")}
+                </Link>
+
+                <span className="text-sm font-medium text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                   {t("navbar.welcome_user", { name: user?.name })}
                 </span>
+
                 <button
                   onClick={handleLogout}
-                  className="text-red-500 hover:text-red-700 font-medium text-sm flex items-center gap-1"
-                  title={t("auth.logout")}
+                  className="text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-500 transition-colors"
+                  title={t("navbar.logout")}
                 >
                   <HiLogout className="w-5 h-5" />
                 </button>
               </div>
             ) : (
-              // Si no está logado
+              // --- MENÚ ESCRITORIO NO LOGUEADO ---
               <div className="hidden md:flex gap-4 mr-2 items-center border-r border-gray-200 dark:border-gray-700 pr-4">
                 <Link to="/login" className={getLinkClass("/login")}>
                   {t("navbar.login")}
@@ -145,7 +164,7 @@ function Layout() {
             </button>
           </div>
 
-          {/* Menú móvil */}
+          {/* Menú móvil y Lista principal */}
           <div
             className={`${
               isMobileMenuOpen ? "block" : "hidden"
@@ -171,17 +190,42 @@ function Layout() {
                 </Link>
               </li>
 
+              {/* ENLACE ADMIN MÓVIL */}
+              {user?.role === "admin" && (
+                <li className="md:hidden">
+                  <Link
+                    to="/admin"
+                    className={`${getLinkClass(
+                      "/admin"
+                    )} text-red-600 dark:text-red-500 font-bold`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {t("navbar.admin_panel")}
+                  </Link>
+                </li>
+              )}
+
+              {/* Bloque de usuario móvil */}
               <li className="mt-4 md:hidden border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2">
                 {isAuthenticated ? (
                   <>
                     <div className="text-gray-500 dark:text-gray-400 px-3 text-sm">
                       Hola, {user?.name}
                     </div>
+
+                    <Link
+                      to="/mis-reservas"
+                      className="block py-2 pr-4 pl-3 text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {t("navbar.my_bookings")}
+                    </Link>
+
                     <button
                       onClick={handleLogout}
                       className="block w-full text-left py-2 pr-4 pl-3 rounded text-red-500 font-bold hover:bg-gray-100 dark:hover:bg-gray-700"
                     >
-                      {t("auth.logout")}
+                      {t("navbar.logout")}
                     </button>
                   </>
                 ) : (
@@ -213,7 +257,6 @@ function Layout() {
       </main>
 
       <footer className="p-4 bg-white rounded-lg shadow md:px-6 md:py-8 border-t dark:bg-gray-800 dark:border-gray-700">
-        {/* Footer */}
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="self-center text-xl font-semibold whitespace-nowrap text-gray-500 dark:text-gray-400">
             Padel App™

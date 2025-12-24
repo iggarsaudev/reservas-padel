@@ -28,6 +28,18 @@ const bookingService = {
     const response = await api.delete(`/bookings/${id}`);
     return response.data;
   },
+
+  // Obtener TODAS las reservas del sistema
+  getAll: async () => {
+    const response = await api.get("/bookings/all");
+    return response.data;
+  },
+
+  // Eliminar reserva (Admin)
+  deleteBooking: async (id) => {
+    const response = await api.delete(`/bookings/${id}`);
+    return response.data;
+  },
 };
 
 export default bookingService;

@@ -2,12 +2,42 @@ const express = require("express");
 const router = express.Router();
 const bookingController = require("../controllers/booking.controller");
 const authenticateToken = require("../middlewares/authMiddleware");
+const isAdmin = require("../middlewares/isAdmin");
 
 /**
  * @swagger
- * tags:
- *   name: Bookings
- *   description: Gestión de reservas de pistas
+ * components:
+ *   schemas:
+ *     Booking:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: ID autogenerado de la reserva
+ *         date:
+ *           type: string
+ *           format: date
+ *           description: Fecha de la reserva (YYYY-MM-DD)
+ *         time:
+ *           type: string
+ *           description: Hora de la reserva (HH:MM)
+ *         courtId:
+ *           type: integer
+ *           description: ID de la pista reservada
+ *         userId:
+ *           type: integer
+ *           description: ID del usuario que hizo la reserva
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Fecha de creación del registro
+ *         example:
+ *           id: 1
+ *           date: "2025-10-20"
+ *           time: "10:30"
+ *           courtId: 2
+ *           userId: 5
+ *           createdAt: "2025-10-15T08:00:00.000Z"
  */
 
 /**
@@ -79,6 +109,33 @@ router.post("/", authenticateToken, bookingController.createBooking);
  *                 $ref: '#/components/schemas/Booking'
  */
 router.get("/", authenticateToken, bookingController.getUserBookings);
+
+/**
+ * @swagger
+ * /api/bookings/all:
+ *   get:
+ *     summary: Obtener todas las reservas del sistema (Admin Dashboard)
+ *     tags: [Bookings]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista completa de reservas con detalles de usuario y pista
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Booking'
+ *       403:
+ *         description: Acceso denegado (No es administrador)
+ */
+router.get(
+  "/all",
+  authenticateToken,
+  isAdmin,
+  bookingController.getAllBookings
+);
 
 /**
  * @swagger

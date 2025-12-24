@@ -10,6 +10,8 @@ import Bookings from "./pages/Bookings";
 import BookingCourt from "./pages/BookingCourt";
 import Home from "./pages/Home";
 import MyBookings from "./pages/MyBookings";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminRoute from "./components/AdminRoute";
 
 function App() {
   return (
@@ -32,6 +34,11 @@ function App() {
 
                 {/* Ahora nadie puede intentar reservar una pista sin login */}
                 <Route path="/reservas/:courtId" element={<BookingCourt />} />
+              </Route>
+
+              {/* Ruta Admin */}
+              <Route element={<AdminRoute />}>
+                <Route path="/admin" element={<AdminDashboard />} />
               </Route>
 
               {/* Ruta 404 */}
