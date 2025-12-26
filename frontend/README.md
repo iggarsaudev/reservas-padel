@@ -1,16 +1,51 @@
-# React + Vite
+# 🎨 Padel App - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interfaz de usuario moderna y responsiva para la gestión de reservas de pistas de pádel. Construida con **React**, **Vite** y **Tailwind CSS**.
 
-Currently, two official plugins are available:
+## 🚀 Tecnologías
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Framework:** React 18 (Hooks, Context API).
+- **Build Tool:** Vite (Rápido y ligero).
+- **Estilos:** Tailwind CSS + Flowbite (Componentes UI).
+- **HTTP Client:** Axios (con interceptores para JWT).
+- **Enrutado:** React Router DOM v6.
+- **Internacionalización:** i18next (Soporte Español/Inglés).
+- **Alertas:** SweetAlert2.
 
-## React Compiler
+## 🛠️ Requisitos Previos
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+- [Node.js](https://nodejs.org/) (v18 o superior)
+- Tener el **Backend** en ejecución (local o remoto).
 
-## Expanding the ESLint configuration
+## 📦 Instalación
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. **Entrar en el directorio:**
+   ```bash
+   cd frontend
+
+2. **Instalar dependencias:**
+   ```bash
+   npm install
+
+3. **Configurar Variables de Entorno: Crea un archivo .env (para local) o .env.production (para build) en la carpeta frontend:**
+   ```bash
+   # URL de tu API Backend
+   # Para local:
+   VITE_API_URL=http://localhost:3001/api
+
+   # Para producción (ejemplo):
+   # VITE_API_URL=[https://padel-api-m30h.onrender.com/api](https://padel-api-m30h.onrender.com/api)
+
+## ▶️ Ejecución
+**Modo Desarrollo:**
+```bash
+npm run dev
+```
+La aplicación estará disponible en http://localhost:5173
+
+##📂 Estructura Clave
+- /src/context: Manejo del estado global (AuthContext).
+- /src/services: Conexión con la API (Axios).
+- /src/pages: Vistas principales (Home, Login, Profile, Bookings).
+- /src/components: Componentes reutilizables (Navbar, Footer, Cards).
+- /src/locales: Archivos de traducción (ES/EN).
