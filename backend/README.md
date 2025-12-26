@@ -1,4 +1,4 @@
-# 🎾 API de Reservas de Pádel
+# 🎾 API Pádel APP
 
 Backend para una aplicación de gestión y reserva de pistas de pádel. Construido con **Node.js**, **Express**, **Prisma** y **MySQL**.
 
