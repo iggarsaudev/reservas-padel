@@ -9,6 +9,7 @@ import {
   HiSun,
   HiLogout,
   HiShieldCheck,
+  HiUser,
 } from "react-icons/hi";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
@@ -22,6 +23,12 @@ function Layout() {
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const getAvatarPath = (filename) => {
+    if (!filename) return "/avatars/default_avatar.png";
+    if (filename.startsWith("http")) return filename;
+    return `/avatars/${filename}`;
+  };
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
@@ -83,9 +90,26 @@ function Layout() {
                   {t("navbar.my_bookings")}
                 </Link>
 
-                <span className="text-sm font-medium text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
-                  {t("navbar.welcome_user", { name: user?.name })}
-                </span>
+                <Link
+                  to="/perfil"
+                  className="hover:text-primary-600 dark:hover:text-primary-500 transition-colors flex items-center gap-1"
+                  title="Mi Perfil"
+                >
+                  <HiUser className="w-5 h-5" />
+                  <span>{t("navbar.my_profile")}</span>
+                </Link>
+
+                {/* Nombre de usuario */}
+                <div className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                  {user?.avatar && (
+                    <img
+                      src={getAvatarPath(user?.avatar)}
+                      alt="Avatar"
+                      className="w-5 h-5 rounded-full"
+                    />
+                  )}
+                  <span>{t("navbar.welcome_user", { name: user?.name })}</span>
+                </div>
 
                 <button
                   onClick={handleLogout}
@@ -209,9 +233,25 @@ function Layout() {
               <li className="mt-4 md:hidden border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2">
                 {isAuthenticated ? (
                   <>
-                    <div className="text-gray-500 dark:text-gray-400 px-3 text-sm">
-                      Hola, {user?.name}
+                    <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 px-3 text-sm">
+                      {user?.avatar && (
+                        <img
+                          src={getAvatarPath(user?.avatar)}
+                          alt="Avatar"
+                          className="w-6 h-6 rounded-full"
+                        />
+                      )}
+                      <span>Hola, {user?.name}</span>
                     </div>
+
+                    {/* ENLACE PERFIL MÓVIL */}
+                    <Link
+                      to="/perfil"
+                      className="block py-2 pr-4 pl-3 text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Mi Perfil
+                    </Link>
 
                     <Link
                       to="/mis-reservas"

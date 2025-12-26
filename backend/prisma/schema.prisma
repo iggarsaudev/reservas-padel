@@ -17,6 +17,7 @@ model User {
   role      Role     @default(user)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  avatar    String?  @default("default_avatar.png")
 
   // Relación: Un usuario tiene muchos partidos
   matches  Match[]

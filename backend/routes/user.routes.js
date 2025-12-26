@@ -11,6 +11,9 @@ const {
   getUserById,
   updateUser,
   deleteUser,
+  getProfile,
+  updateProfile,
+  changePassword,
 } = require("../controllers/user.controller.js");
 
 // Modelo
@@ -95,6 +98,75 @@ router.get("/", authenticateToken, isAdmin, getAllUsers);
  *          description: El email ya existe o datos inválidos
  */
 router.post("/", createUser);
+
+/**
+ * @swagger
+ *  /api/users/profile:
+ *    get:
+ *      summary: Obtener perfil del usuario logueado
+ *      tags: [Users Profile]
+ *      security:
+ *        - bearerAuth: []
+ *    responses:
+ *      200:
+ *        description: Datos del usuario
+ */
+router.get("/profile", authenticateToken, getProfile);
+
+/**
+ * @swagger
+ *  /api/users/profile:
+ *    put:
+ *      summary: Actualizar nombre y apellidos del usuario logueado
+ *      tags: [Users Profile]
+ *      security:
+ *        - bearerAuth: []
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                name:
+ *                  type: string
+ *                surnames:
+ *                  type: string
+ *      responses:
+ *        200:
+ *          description: Perfil actualizado
+ */
+router.put("/profile", authenticateToken, updateProfile);
+
+/**
+ * @swagger
+ *  /api/users/password:
+ *    put:
+ *      summary: Cambiar contraseña (requiere la actual)
+ *      tags: [Users Profile]
+ *      security:
+ *        - bearerAuth: []
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              required:
+ *                - currentPassword
+ *                - newPassword
+ *              properties:
+ *                currentPassword:
+ *                  type: string
+ *                newPassword:
+ *                  type: string
+ *      responses:
+ *        200:
+ *          description: Contraseña cambiada
+ *        400:
+ *          description: Contraseña actual incorrecta
+ */
+router.put("/password", authenticateToken, changePassword);
 
 // Rutas con ID, necesario el middleware /api/users/1
 /**

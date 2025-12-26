@@ -53,12 +53,18 @@ const updateUser = async (id, userData) => {
     surnames: userData.surnames,
     email: userData.email,
     role: userData.role,
+    avatar: userData.avatar,
   };
 
-  // Solo si envían una nueva contraseña, la encriptamos y la añadimos
+  // Solo si envían una nueva contraseña, la encriptamos
   if (userData.password) {
     dataToUpdate.password = await bcrypt.hash(userData.password, 10);
   }
+
+  // Limpiamos campos undefined para que no borre datos si no se envían
+  Object.keys(dataToUpdate).forEach(
+    (key) => dataToUpdate[key] === undefined && delete dataToUpdate[key]
+  );
 
   const updatedUser = await prisma.user.update({
     where: { id: Number(id) },
@@ -76,10 +82,47 @@ const deleteUser = async (id) => {
   });
 };
 
+// Cambiar contraseña (con validación)
+const changePassword = async (userId, currentPassword, newPassword) => {
+  // Buscamos al usuario para tener su hash actual
+  const user = await prisma.user.findUnique({
+    where: { id: Number(userId) },
+  });
+
+  if (!user) throw new Error("Usuario no encontrado");
+
+  // Comparamos la contraseña actual con la de la BD
+  const isValid = await bcrypt.compare(currentPassword, user.password);
+
+  if (!isValid) {
+    // Lanzamos un error específico para capturarlo en el controlador
+    throw new Error("INVALID_PASSWORD");
+  }
+
+  // Encriptamos la nueva
+  const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+  // Actualizamos solo la contraseña
+  await prisma.user.update({
+    where: { id: Number(userId) },
+    data: { password: hashedNewPassword },
+  });
+
+  return { message: "Contraseña actualizada" };
+};
+
+const updateProfile = async (data) => {
+  // Si 'data' es una instancia de FormData, axios/fetch necesita saberlo
+  const response = await api.put("/users/profile", data);
+  return response.data;
+};
+
 module.exports = {
   getAllUsers,
   createUser,
   getUserById,
   updateUser,
   deleteUser,
+  changePassword,
+  updateProfile,
 };

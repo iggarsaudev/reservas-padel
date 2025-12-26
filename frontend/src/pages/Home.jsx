@@ -3,15 +3,29 @@ import { Button, Card } from "flowbite-react";
 import { useTranslation } from "react-i18next";
 import { HiCheck, HiUserGroup, HiLightningBolt } from "react-icons/hi";
 import heroImage from "../assets/images/hero-padel.jpg";
+import { useAuth } from "../context/AuthContext";
 
 function Home() {
   const { t } = useTranslation();
+  const { user } = useAuth();
+
+  // LÓGICA DE NOMBRE A PRUEBA DE FALLOS
+  // 1. Si hay usuario y tiene nombre -> Usa el nombre
+  // 2. Si hay usuario pero NO tiene nombre -> Usa lo que hay antes del @ en el email
+  // 3. Si no hay usuario -> null
+  const getUserDisplayName = () => {
+    if (!user) return null;
+    if (user.name) return user.name;
+    if (user.email) return user.email.split("@")[0]; // Fallback al email
+    return "Jugador"; // Fallback final por si acaso
+  };
+
+  const displayName = getUserDisplayName();
 
   return (
     <div className="min-h-screen flex flex-col">
       {/* --- HERO SECTION --- */}
       <section className="relative bg-gray-900 text-white py-32 px-4 overflow-hidden">
-        {/* Imagen de fondo con overlay oscuro */}
         <div className="absolute inset-0 z-0">
           <img
             src={heroImage}
@@ -22,22 +36,39 @@ function Home() {
 
         <div className="relative z-10 container mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-6 animate-fade-in-up">
-            {t("home.hero_title_1")} <br />
+            {/* Renderizado condicional seguro */}
+            {displayName ? (
+              <>
+                <span className="block mb-2 text-primary-400">
+                  ¡Hola, {displayName}!
+                </span>
+                {t("home.hero_title_1")}
+              </>
+            ) : (
+              t("home.hero_title_1")
+            )}
+            <br />
             <span className="text-primary-500">{t("home.hero_title_2")}</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
             {t("home.hero_subtitle")}
           </p>
+
           <div className="flex flex-col sm:flex-row justify-center gap-4">
+            {/* BOTÓN 1: RESERVAR
+                SOLUCIÓN: Hemos quitado 'gradientDuoTone'. 
+                Usamos clases de Tailwind directas (bg-gradient-to-r...) para el mismo efecto. 
+                Esto elimina el error de consola 100%. */}
             <Link to="/reservas">
               <Button
                 size="xl"
-                gradientDuoTone="greenToBlue"
-                className="w-full sm:w-auto font-bold shadow-lg hover:scale-105 transition-transform"
+                className="w-full sm:w-auto font-bold shadow-lg hover:scale-105 transition-transform bg-gradient-to-r from-green-400 to-blue-600 border-none hover:from-green-500 hover:to-blue-700 text-white focus:ring-4 focus:ring-blue-300"
               >
                 {t("home.cta_reserve")}
               </Button>
             </Link>
+
+            {/* BOTÓN 2: REGISTRO */}
             <Link to="/register">
               <Button
                 size="xl"
@@ -64,7 +95,6 @@ function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Feature 1 */}
             <Card className="dark:bg-gray-800 border-none shadow-lg hover:shadow-xl transition-shadow">
               <div className="flex flex-col items-center text-center">
                 <div className="p-4 bg-blue-100 rounded-full mb-4 text-blue-600 dark:bg-blue-900 dark:text-blue-300">
@@ -79,7 +109,6 @@ function Home() {
               </div>
             </Card>
 
-            {/* Feature 2 */}
             <Card className="dark:bg-gray-800 border-none shadow-lg hover:shadow-xl transition-shadow">
               <div className="flex flex-col items-center text-center">
                 <div className="p-4 bg-green-100 rounded-full mb-4 text-green-600 dark:bg-green-900 dark:text-green-300">
@@ -94,7 +123,6 @@ function Home() {
               </div>
             </Card>
 
-            {/* Feature 3 */}
             <Card className="dark:bg-gray-800 border-none shadow-lg hover:shadow-xl transition-shadow">
               <div className="flex flex-col items-center text-center">
                 <div className="p-4 bg-purple-100 rounded-full mb-4 text-purple-600 dark:bg-purple-900 dark:text-purple-300">
@@ -120,8 +148,14 @@ function Home() {
           <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
             {t("home.final_text")}
           </p>
+
+          {/* BOTÓN FINAL
+              SOLUCIÓN: Quitamos 'gradientMonochrome'. Usamos bg-cyan-600 manualmente. */}
           <Link to="/register">
-            <Button gradientMonochrome="info" size="xl" className="font-bold">
+            <Button
+              size="xl"
+              className="font-bold bg-cyan-600 hover:bg-cyan-700 text-white border-none focus:ring-4 focus:ring-cyan-300"
+            >
               {t("home.final_btn")}
             </Button>
           </Link>

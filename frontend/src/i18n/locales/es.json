@@ -5,6 +5,7 @@
     "home": "Inicio",
     "book": "Reservar Pista",
     "my_bookings": "Mis Reservas",
+    "my_profile": "Mi perfil",
     "admin_panel": "Administración",
     "logout": "Cerrar Sesión",
     "welcome_user": "Hola, {{name}}"
@@ -152,5 +153,20 @@
       "delete_confirm_text": "¡Cuidado! Si borras la pista, dejará de estar disponible. (Solo se puede borrar si no tiene reservas futuras)",
       "delete_success": "Pista eliminada"
     }
+  },
+  "profile": {
+    "title": "Mi Perfil 👤",
+    "personal_data": "Datos Personales",
+    "security": "Seguridad",
+    "lbl_name": "Nombre",
+    "lbl_surnames": "Apellidos",
+    "lbl_email": "Correo Electrónico",
+    "lbl_current_password": "Contraseña Actual",
+    "lbl_new_password": "Nueva Contraseña",
+    "btn_update_data": "Guardar Cambios",
+    "btn_change_password": "Actualizar Contraseña",
+    "msg_update_success": "Datos actualizados correctamente",
+    "msg_password_success": "Contraseña cambiada correctamente",
+    "msg_password_error": "La contraseña actual no es correcta"
   }
 }

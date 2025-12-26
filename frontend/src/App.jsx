@@ -13,6 +13,7 @@ import MyBookings from "./pages/MyBookings";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminRoute from "./components/AdminRoute";
 import AdminCourts from "./pages/AdminCourts";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
               <Route element={<ProtectedRoute />}>
                 <Route path="/reservas" element={<Bookings />} />
                 <Route path="/mis-reservas" element={<MyBookings />} />
+                <Route path="/perfil" element={<Profile />} />
 
                 {/* Ahora nadie puede intentar reservar una pista sin login */}
                 <Route path="/reservas/:courtId" element={<BookingCourt />} />
