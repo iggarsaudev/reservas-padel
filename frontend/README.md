@@ -1,4 +1,4 @@
-# 🎨 Padel App - Frontend
+# 🎾 Padel App - Frontend
 
 Interfaz de usuario moderna y responsiva para la gestión de reservas de pistas de pádel. Construida con **React**, **Vite** y **Tailwind CSS**.
 
