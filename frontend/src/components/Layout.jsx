@@ -62,9 +62,15 @@ function Layout() {
     <div className="flex flex-col min-h-screen dark:bg-gray-900">
       <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded border-b dark:bg-gray-800 dark:border-gray-700 relative z-50">
         <div className="container flex flex-wrap justify-between items-center mx-auto">
-          <Link to="/" className="flex items-center">
-            <span className="self-center text-xl font-semibold whitespace-nowrap text-primary-600 dark:text-white">
-              🎾 Padel App
+          <Link to="/" className="flex items-center gap-3">
+            <img
+              src="/mi-logo-padel.png"
+              className="h-10 w-auto"
+              alt="Logo Padel App"
+            />
+
+            <span className="self-center whitespace-nowrap text-xl font-semibold text-primary-600 dark:text-white">
+              Padel App
             </span>
           </Link>
 
